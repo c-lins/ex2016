@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.c.lins</groupId>
+  <artifactId>ex2016</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+      <module>springboot-shiro</module>
+  </modules>
+
+  <name>2016 Examples Demo</name>
+  <url>http://maven.apache.org</url>
+
+  <!-- 配置默认中央仓库 -->
+  <repositories>
+    <repository>
+      <id>central</id>
+      <name>local private nexus</name>
+      <url>http://10.6.80.145:8088/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <name>local private nexus</name>
+      <url>http://10.6.80.145:8088/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <!-- 配置远程发布到私服，mvn deploy -->
+  <distributionManagement>
+    <repository>
+      <id>nexus-releases</id>	<!-- 这里的id必须与setting.xml中配置server账号的id保持一致 -->
+      <url>http://10.6.80.145:8088/nexus/content/repositories/releases/</url>
+    </repository>
+    <!--
+    <snapshotRepository>
+        <id>snapshots</id>
+        <url>http://10.6.80.145:8088/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository> -->
+  </distributionManagement>
+
+</project>

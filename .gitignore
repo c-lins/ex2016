@@ -1,0 +1,19 @@
+# IntelliJ project files
+*.iml
+.idea/
+.mvn/
+overlays/
+webapp/
+
+# Eclipse project files
+.project
+.classpath
+.settings/
+
+# Others
+target/
+logs/
+
+# Version Manager files
+.svn/
+.git/
