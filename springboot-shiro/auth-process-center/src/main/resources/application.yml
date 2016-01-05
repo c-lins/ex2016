@@ -3,13 +3,13 @@ server:
     port: 8080
 
 # DATASOURCE
-jdbc:
-    driverClass: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@10.6.80.147:1521:YaoOracle
-    username: b2bvimdev
-    password: b2bvimdev
-    validationQuery: select 1 from dual
-    testWhileIdle: true
+#jdbc:
+#    driverClass: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@10.6.80.147:1521:YaoOracle
+#    username: b2bvimdev
+#    password: b2bvimdev
+#    validationQuery: select 1 from dual
+#    testWhileIdle: true
 
 # SPRING PROFILES
 spring:
