@@ -17,7 +17,7 @@ import java.util.List;
  * Created by lins on 16-1-11.
  */
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/v1/account")
 public class AccountEndpoint {
 
     @Autowired
@@ -32,8 +32,8 @@ public class AccountEndpoint {
         }
     }
 
-    @RequestMapping(value = "/accouts", produces = MediaTypes.JSON_UTF_8)
-    public List<AccountDto> liatAllAccount(Pageable pageable){
+    @RequestMapping(value = {"/","/list"}, produces = MediaTypes.JSON_UTF_8)
+    public List<AccountDto> listAllAccount(Pageable pageable){
         return accountService.findAll(pageable);
     }
 }

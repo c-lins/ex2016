@@ -1,11 +1,12 @@
 package org.c.lins.auth.entity;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User{
@@ -19,6 +20,23 @@ public class User{
 	public String hashPassword;
 	public String salt;
 	public String email;
+
+	// 多对多定义
+	@ManyToMany
+	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+	// Fecth策略定义
+	@Fetch(FetchMode.SUBSELECT)
+	// 集合按id排序
+	@OrderBy("id ASC")
+	private List<Role> roles = Lists.newArrayList(); // 有序的关联对象集合
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 
 	@Override
 	public String toString() {

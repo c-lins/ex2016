@@ -42,11 +42,4 @@ public class AccountService {
         return BeanMapper.mapList(users, AccountDto.class);
     }
 
-    public static void main(String[] args) {
-        byte[] salt = Digests.generateSalt(Securitys.SALT_SIZE);
-        System.out.println(Encodes.encodeHex(salt));
-
-        byte[] hashPassword = Digests.sha1("123456".getBytes(), salt, Securitys.HASH_INTERATIONS);
-        System.out.println(Encodes.encodeHex(hashPassword));
-    }
 }

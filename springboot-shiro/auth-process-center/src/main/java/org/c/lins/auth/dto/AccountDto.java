@@ -1,6 +1,7 @@
 package org.c.lins.auth.dto;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.c.lins.auth.entity.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class AccountDto {
     /**
      * User Role 关系
      */
-    public List roles = new ArrayList();
+    public List<Role> roles = new ArrayList<>();
 
     @Override
     public String toString() {
