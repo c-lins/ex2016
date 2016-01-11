@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.c.lins</groupId>
-  <artifactId>ex2016</artifactId>
+  <artifactId>examples2016</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 

@@ -1,15 +1,9 @@
 # Server settings
 server:
     port: 8080
-
-# DATASOURCE
-#jdbc:
-#    driverClass: oracle.jdbc.OracleDriver
-#    url: jdbc:oracle:thin:@10.6.80.147:1521:YaoOracle
-#    username: b2bvimdev
-#    password: b2bvimdev
-#    validationQuery: select 1 from dual
-#    testWhileIdle: true
+#    context-path: / by default
+management:
+    port: 7002
 
 # SPRING PROFILES
 spring:
@@ -19,14 +13,34 @@ spring:
         encoding.enable: true
         encoding.force: true
     # SPRING MVC (HttpMapperProperties)
-    view:
+    mvc.view:
         prefix: /WEB-INF/views/
         suffix: .html
+    # DATASOURCE
+    #set H2 in file mode as the production DB
+    jpa:
+        database: H2
+        hibernate:
+            ddl-auto: none
+    datasource:
+        driverClassName: org.h2.Driver
+#        url: jdbc:h2:file:~/.h2/bootapi;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;
+        url: jdbc:h2:mem:bootapi_mem
+        username: sa
+        password:
+        initialize: false
+        initial-size: 10
+        max-active: 100
+        min-idle: 8
+        max-idle: 8
+
+flyway:
+    enabled: true
 
 # MyBatis
-mybatis:
-    typeAliasesPackage: com.fangkuaiyi.visit.bo
-    mapperLocations: classpath:/mybatis/*Mapper.xml
+#mybatis:
+#    typeAliasesPackage: com.fangkuaiyi.visit.bo
+#    mapperLocations: classpath:/mybatis/*Mapper.xml
 
 # LOGGING
 logging:

@@ -1,8 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2014 springside.github.io
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- *******************************************************************************/
 package org.c.lins.auth.utils;
 
 import java.io.PrintWriter;
@@ -13,7 +8,7 @@ import java.io.StringWriter;
  * 
  * 参考了guava的Throwables。
  * 
- * @author calvin
+ * @author linchao@111.com.cn
  */
 public class Exceptions {
 

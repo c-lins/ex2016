@@ -1,4 +1,4 @@
-package org.c.lins.auth.utils;
+package org.c.lins.auth.utils.constants;
 
 import java.nio.charset.Charset;
 

@@ -3,7 +3,7 @@
 	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-	<property name="LOG_HOME" value="/tmp/logs/visit"/>
+	<property name="LOG_HOME" value="/tmp/logs/ex2016"/>
 
 	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -123,7 +123,7 @@
 		<appender-ref ref="FILE"/>
 	</appender>
 
-	<logger name="com.fangkuaiyi.visit" level="DEBUG"/>
+	<logger name="org.c.lins.auth" level="DEBUG"/>
 
 	<root level="INFO">
 		<appender-ref ref="FILE"/>
