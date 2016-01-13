@@ -1,13 +1,18 @@
 package org.c.lins.auth.config.security;
 
+import com.google.common.collect.Lists;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.c.lins.auth.entity.Role;
 import org.c.lins.auth.entity.User;
-import org.c.lins.auth.service.UserService;
+import org.c.lins.auth.service.AccountService;
+import org.c.lins.auth.utils.Encodes;
+import org.c.lins.auth.utils.constants.Securitys;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -18,18 +23,16 @@ import java.util.ArrayList;
  */
 //@Component
 public class ShiroDbRealm extends AuthorizingRealm {
-    public static final String HASH_ALGORITHM = "SHA-1";
-    public static final int HASH_INTERATIONS = 1024;
 
 //    @Autowired
 //    private SessionDAO sessionDAO;
     @Autowired
-    private UserService userService;
+    private AccountService accountService;
 
     @PostConstruct
     public void initCredentialsMatcher() {
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(HASH_ALGORITHM);
-        //matcher.setHashIterations(HASH_INTERATIONS);
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(Securitys.HASH_ALGORITHM);
+        matcher.setHashIterations(Securitys.HASH_INTERATIONS);
 
         setCredentialsMatcher(matcher);
     }
@@ -37,10 +40,14 @@ public class ShiroDbRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        User user = userService.findByLoginName(token.getUsername());
+        User user = accountService.findUserByLoginName(token.getUsername());
         if (user != null) {
+//            if ("disabled".equals(user.status())) {
+//                throw new DisabledAccountException();
+//            }
 
-            return new SimpleAuthenticationInfo(user, user.loginName, getName());
+            byte[] salt = Encodes.decodeHex(user.salt);
+            return new SimpleAuthenticationInfo(new ShiroUser(user.loginName,user.aliasName), user.hashPassword, ByteSource.Util.bytes(salt), getName());
         } else {
             throw new UnknownAccountException();
         }
@@ -49,23 +56,17 @@ public class ShiroDbRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        User shiroUser = (User) principals.getPrimaryPrincipal();
+        ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
+        User user = accountService.findUserByLoginName(shiroUser.loginName);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        //  0：超级管理员 1：一般用户
-//        if ("0".equals(shiroUser.getUserType())) {
-//            // 基于Role的权限信息
-//            info.addRole("admin");
-//
-//            // 基于Permission的权限信息
-//            info.addStringPermissions(new ArrayList<String>(){{add("sys:all:all");}});
-//        }else{
-//            // 基于Role的权限信息
-//            info.addRole("other");
-//
-//            // 基于Permission的权限信息
-//            info.addStringPermissions(new ArrayList<String>(){{add("sys:self:all");}});
-//        }
+        for (Role role : user.getRoles()) {
+            // 基于Role的权限信息
+            info.addRole(role.roleName);
+
+            // 基于Permission的权限信息
+//            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));
+        }
         return info;
     }
 

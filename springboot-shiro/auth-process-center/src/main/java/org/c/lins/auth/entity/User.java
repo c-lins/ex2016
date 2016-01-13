@@ -25,9 +25,10 @@ public class User{
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
 	// Fecth策略定义
-	@Fetch(FetchMode.SUBSELECT)
+	@Fetch(FetchMode.JOIN)
 	// 集合按id排序
 	@OrderBy("id ASC")
+
 	private List<Role> roles = Lists.newArrayList(); // 有序的关联对象集合
 
 	public List<Role> getRoles() {
