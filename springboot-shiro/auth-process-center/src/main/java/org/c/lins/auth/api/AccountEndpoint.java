@@ -40,7 +40,7 @@ public class AccountEndpoint {
     }
 
 
-    @RequestMapping(value = {"/text"}, produces = MediaTypes.JSON_UTF_8)
+    @RequestMapping(value = {"/text","/test"}, produces = MediaTypes.JSON_UTF_8)
     public String listAllAccount(){
         return "碾；";
     }
