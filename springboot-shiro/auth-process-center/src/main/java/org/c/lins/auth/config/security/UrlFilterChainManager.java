@@ -55,6 +55,6 @@ public class UrlFilterChainManager {
             }
 
         }
-        filterChainManager.addToChain("/**", "perms","SHOW:UNOPENED");
+        filterChainManager.addToChain("/**", "user");
     }
 }
