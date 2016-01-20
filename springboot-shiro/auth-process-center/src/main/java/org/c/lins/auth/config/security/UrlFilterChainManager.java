@@ -39,22 +39,23 @@ public class UrlFilterChainManager {
             filterChainManager.getFilterChains().putAll(defaultFilterChains);
         }
         //2、循环URL Filter 注册filter chain
-        for (UrlFilter urlFilter : urlFilters) {
-            String url = urlFilter.url;
-            ////注册basics filter
-            if (!StringUtils.isEmpty(urlFilter.basics)) {
-                filterChainManager.addToChain(url, urlFilter.basics);
-            }
-            //注册roles filter
-            if (!StringUtils.isEmpty(urlFilter.roles)) {
-                filterChainManager.addToChain(url, "roles", urlFilter.roles);
-            }
-            //注册perms filter
-            if (!StringUtils.isEmpty(urlFilter.permissions)) {
-                filterChainManager.addToChain(url, "perms", urlFilter.permissions);
-            }
-
-        }
-        filterChainManager.addToChain("/**", "user");
+//        for (UrlFilter urlFilter : urlFilters) {
+//            String url = urlFilter.url;
+//            ////注册basics filter
+//            if (!StringUtils.isEmpty(urlFilter.basics)) {
+//                filterChainManager.addToChain(url, urlFilter.basics);
+//            }
+//            //注册roles filter
+//            if (!StringUtils.isEmpty(urlFilter.roles)) {
+//                filterChainManager.addToChain(url, "roles", urlFilter.roles);
+//            }
+//            //注册perms filter
+//            if (!StringUtils.isEmpty(urlFilter.permissions)) {
+//                filterChainManager.addToChain(url, "perms", urlFilter.permissions);
+//            }
+//
+//        }
+        filterChainManager.addToChain("/rest/**", "statelessAuthc");
+//        filterChainManager.addToChain("/**", "user");
     }
 }

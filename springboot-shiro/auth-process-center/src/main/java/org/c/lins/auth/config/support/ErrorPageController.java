@@ -51,7 +51,7 @@ public class ErrorPageController implements ErrorController {
 	}
 
 	private void logError(Map<String, Object> attributes, HttpServletRequest request) {
-		attributes.put("from", request.getRemoteAddr());
+		attributes.put("form", request.getRemoteAddr());
 //		logger.error(jsonMapper.toJson(attributes));
 	}
 

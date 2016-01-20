@@ -13,15 +13,13 @@ public class ShiroUser implements Serializable {
     public String loginName;
     public String aliasName;
 
-    public ShiroUser(String loginName, String aliasName) {
-        this.loginName = loginName;
-        this.aliasName = aliasName;
-    }
-
     public String getLoginName() {
         return loginName;
     }
 
+    public Long getPrincipal() {
+        return 1L;
+    }
     /**
      * 本函数输出将作为默认的<shiro:principal/>输出.
      */

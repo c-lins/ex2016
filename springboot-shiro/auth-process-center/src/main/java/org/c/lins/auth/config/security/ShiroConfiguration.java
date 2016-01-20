@@ -1,12 +1,18 @@
 package org.c.lins.auth.config.security;
 
+import com.google.common.collect.Lists;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.c.lins.auth.config.security.jwt.filter.JWTOrFormAuthenticationFilter;
+import org.c.lins.auth.config.security.jwt.realm.JWTRealm;
+import org.c.lins.auth.config.security.standard.realm.StandardRealm;
 import org.c.lins.auth.utils.constants.Securitys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +21,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.servlet.Filter;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,7 +34,8 @@ public class ShiroConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ShiroConfiguration.class);
 
-    private static Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+    private static Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+    private static Map<String, Filter> filtersMap = new LinkedHashMap<>();
 
 
     @Bean(name = "realm")
@@ -35,10 +44,32 @@ public class ShiroConfiguration {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher(Securitys.HASH_ALGORITHM);
         credentialsMatcher.setHashIterations(Securitys.HASH_INTERATIONS);
 
-        ShiroDbRealm securityRealm = new ShiroDbRealm();
+        StandardRealm securityRealm = new StandardRealm();
         securityRealm.setCredentialsMatcher(credentialsMatcher);
         securityRealm.setCacheManager(cacheManager);
         return securityRealm;
+    }
+
+    @Bean(name = "jwtrealm")
+    public AuthorizingRealm jwtrealm(EhCacheManager cacheManager) {
+        SimpleCredentialsMatcher tokenMatcher = new SimpleCredentialsMatcher();
+
+        JWTRealm jwtRealm = new JWTRealm();
+        jwtRealm.setCredentialsMatcher(tokenMatcher);
+        return jwtRealm;
+    }
+
+    @Bean(name = "sessionManager")
+    public DefaultSessionManager defaultSessionManager() {
+        DefaultSessionManager dsm = new DefaultSessionManager();
+        dsm.setSessionValidationSchedulerEnabled(false);
+        return dsm;
+    }
+
+    @Bean(name = "subjectFactory")
+    public StatelessDefaultSubjectFactory subjectFactory() {
+        StatelessDefaultSubjectFactory sdsf = new StatelessDefaultSubjectFactory();
+        return sdsf;
     }
 
     @Bean(name = "shiroEhcacheManager")
@@ -61,9 +92,15 @@ public class ShiroConfiguration {
     }
 
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager defaultWebSecurityManager(EhCacheManager cacheManager,AuthorizingRealm realm) {
+    public DefaultWebSecurityManager defaultWebSecurityManager(EhCacheManager cacheManager,AuthorizingRealm realm,AuthorizingRealm jwtrealm,DefaultSessionManager defaultSessionManager,StatelessDefaultSubjectFactory subjectFactory) {
         DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
-        dwsm.setRealm(realm);
+        Collection realms = Lists.newArrayList();
+        realms.add(jwtrealm);
+        realms.add(realm);
+
+        dwsm.setRealms(realms);
+        dwsm.setSessionManager(defaultSessionManager);
+//        dwsm.setSubjectFactory(subjectFactory);
         dwsm.setCacheManager(cacheManager);
         return dwsm;
     }
@@ -84,12 +121,23 @@ public class ShiroConfiguration {
         return shiroFilterFactoryBean;
     }
 
+    @Bean(name = "statelessAuthcFilter")
+    public JWTOrFormAuthenticationFilter statelessAuthcFilter() {
+        final JWTOrFormAuthenticationFilter statelessAuthc = new JWTOrFormAuthenticationFilter();
+        statelessAuthc.setLoginUrl("/rest/auth/login");
+
+        return statelessAuthc;
+    }
+
     @Bean(name = "filterChainManager")
-    public CustomDefaultFilterChainManager customDefaultFilterChainManager() {
+    public CustomDefaultFilterChainManager customDefaultFilterChainManager(JWTOrFormAuthenticationFilter statelessAuthcFilter) {
         CustomDefaultFilterChainManager cdfcm = new CustomDefaultFilterChainManager();
 
-        filterChainDefinitionMap.put("/v1/auth/**", "anon");
-        filterChainDefinitionMap.put("/v1/account/", "authc");
+        filtersMap.put("statelessAuthc",statelessAuthcFilter);
+//        filterChainDefinitionMap.put("/rest/auth/login", "anon");
+//        filterChainDefinitionMap.put("/v1/account/", "authc");
+
+        cdfcm.setCustomFilters(filtersMap);
         cdfcm.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return cdfcm;
     }

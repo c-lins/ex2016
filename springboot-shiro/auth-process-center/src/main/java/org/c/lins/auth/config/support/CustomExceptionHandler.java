@@ -70,7 +70,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	public void logError(Exception ex, HttpServletRequest request) {
 		Map<String, String> map = Maps.newHashMap();
 		map.put("message", ex.getMessage());
-		map.put("from", request.getRemoteAddr());
+		map.put("form", request.getRemoteAddr());
 		String queryString = request.getQueryString();
 		map.put("path", queryString != null ? (request.getRequestURI() + "?" + queryString) : request.getRequestURI());
 

@@ -1,6 +1,5 @@
-package org.c.lins.auth.config.security;
+package org.c.lins.auth.config.security.standard.realm;
 
-import com.google.common.collect.Lists;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -8,6 +7,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.c.lins.auth.config.security.ShiroUser;
+import org.c.lins.auth.config.security.jwt.filter.JWTAuthenticationToken;
 import org.c.lins.auth.entity.Role;
 import org.c.lins.auth.entity.User;
 import org.c.lins.auth.service.AccountService;
@@ -16,13 +17,12 @@ import org.c.lins.auth.utils.constants.Securitys;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 
 /**
  * Created by lins on 15-12-21.
  */
 //@Component
-public class ShiroDbRealm extends AuthorizingRealm {
+public class StandardRealm extends AuthorizingRealm {
 
 //    @Autowired
 //    private SessionDAO sessionDAO;
@@ -38,6 +38,11 @@ public class ShiroDbRealm extends AuthorizingRealm {
     }
 
     @Override
+    public boolean supports(AuthenticationToken token) {
+        return token != null && token instanceof UsernamePasswordToken;
+    }
+
+    @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         User user = accountService.findUserByLoginName(token.getUsername());
@@ -47,7 +52,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 //            }
 
             byte[] salt = Encodes.decodeHex(user.salt);
-            return new SimpleAuthenticationInfo(new ShiroUser(user.loginName,user.aliasName), user.hashPassword, ByteSource.Util.bytes(salt), getName());
+            return new SimpleAuthenticationInfo(user, user.hashPassword, ByteSource.Util.bytes(salt), getName());
         } else {
             throw new UnknownAccountException();
         }

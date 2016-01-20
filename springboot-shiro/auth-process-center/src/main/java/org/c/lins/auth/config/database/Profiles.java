@@ -1,9 +1,9 @@
-package org.c.lins.auth.config;
+package org.c.lins.auth.config.database;
 
 /**
  * 定义项目中使用的Profiles
- * 
- * @author calvin
+ *
+ * Created by lins on 16-1-19.
  */
 public class Profiles {
 

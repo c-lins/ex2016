@@ -64,7 +64,7 @@ public class AccountService {
     /**
      * 按Id获得用户.
      */
-    public User getUser(Long id) {
+    public User findById(Long id) {
         return userDao.findOne(id);
     }
 

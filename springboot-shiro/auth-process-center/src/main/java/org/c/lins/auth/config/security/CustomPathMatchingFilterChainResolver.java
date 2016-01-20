@@ -36,7 +36,8 @@ public class CustomPathMatchingFilterChainResolver extends PathMatchingFilterCha
         for (String pathPattern : filterChainManager.getChainNames()) {
 
             // If the path does match, then pass on to the subclass implementation for specific checks:
-            if (pathMatches(pathPattern, requestURI) && (!("/**").equals(pathPattern) || chainNames.size()==0)) {
+//            if (pathMatches(pathPattern, requestURI) && (!("/**").equals(pathPattern) || chainNames.size()==0)) {
+            if (pathMatches(pathPattern, requestURI)) {
                 chainNames.add(pathPattern);
             }
         }

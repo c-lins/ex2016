@@ -2,6 +2,7 @@ package org.c.lins.auth.entity;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.c.lins.auth.config.security.ShiroUser;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class User{
+public class User extends ShiroUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
