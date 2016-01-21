@@ -1,6 +1,7 @@
 package org.c.lins.auth.config.security.jwt.filter;
 
 import com.nimbusds.jose.JWSObject;
+import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -56,23 +57,19 @@ public final class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws IOException {
 
+            System.out.println("===========---"+getAuthzHeader(request));
         if (isLoginRequest(request, response)) {
-//            String json = IOUtils.toString(request.getInputStream());
-//
-//            if (json != null && !json.isEmpty()) {
-//
-//                try (JsonReader jr = Json.createReader(new StringReader(json))) {
-//                    JsonObject object = jr.readObject();
-//                    String username = object.getString(USER_ID);
-//                    String password = object.getString(PASSWORD);
-//                    return new UsernamePasswordToken(username, password);
-//                }
-//
-//            }
-
+            String json = IOUtils.toString(request.getInputStream());
             String username = request.getParameter(USER_ID);
-                    String password = request.getParameter(PASSWORD);
-                    return new UsernamePasswordToken(username, password);
+            String password = request.getParameter(PASSWORD);
+            if (json != null && !json.isEmpty()) {
+
+                JSONObject jsonObj = new JSONObject(json);
+
+                username = (String)jsonObj.get(USER_ID);
+                password = (String)jsonObj.get(PASSWORD);
+            }
+            return new UsernamePasswordToken(username, password);
         }
 
         if (isLoggedAttempt(request, response)) {

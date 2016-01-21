@@ -58,7 +58,7 @@ public class GFA_AuthEndpoint {
         return "用户退出成功";
     }
 
-    @RequestMapping(value = "/tet",method = RequestMethod.POST)
+    @RequestMapping(value = "/tet")
     public String loginx() {
         try {
             //SecurityUtils.getSubject().logout();
