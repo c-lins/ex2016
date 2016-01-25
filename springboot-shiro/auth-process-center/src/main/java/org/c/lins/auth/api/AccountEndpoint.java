@@ -1,6 +1,5 @@
 package org.c.lins.auth.api;
 
-import org.c.lins.auth.config.security.UrlFilterChainManager;
 import org.c.lins.auth.entity.User;
 import org.c.lins.auth.service.AccountService;
 import org.c.lins.auth.utils.constants.MediaTypes;
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lins on 16-1-11.

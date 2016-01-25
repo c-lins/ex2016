@@ -20,7 +20,7 @@ public class CORSFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+    public void doFilter(ServletRequest  req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
 //        Serializable sessionId = null;
 //        Subject requestSubject = new Subject.Builder().sessionId(sessionId).buildSubject();
@@ -32,7 +32,7 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
 //        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type,authorization, X-E4M-With");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type,authorization, X-E4M-With,Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
 //        response.addHeader(
 //                "Access-Control-Allow-Credentials", "true"); // qwest.get(url, null, { withCredentials: true }); //允许跨域设置cookie
         chain.doFilter(req, res);

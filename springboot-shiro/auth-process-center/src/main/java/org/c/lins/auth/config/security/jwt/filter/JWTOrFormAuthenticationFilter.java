@@ -8,6 +8,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -41,6 +42,11 @@ public final class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         boolean loggedIn = false;
 
+        if("OPTIONS".equals(((HttpServletRequest)request).getMethod())){
+            HttpServletResponse httpResponse = WebUtils.toHttp(response);
+            httpResponse.setStatus(HttpServletResponse.SC_OK);
+            return loggedIn;
+        }
         if (isLoginRequest(request, response) || isLoggedAttempt(request, response)) {
             loggedIn = executeLogin(request, response);
         }

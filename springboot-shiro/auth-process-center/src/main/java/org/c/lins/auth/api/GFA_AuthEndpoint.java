@@ -6,6 +6,7 @@ import org.c.lins.auth.config.security.jwt.TokenResponse;
 import org.c.lins.auth.entity.User;
 import org.c.lins.auth.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
