@@ -1,6 +1,6 @@
 # Server settings
 server:
-    port: 8080
+    port: 8082
 #    context-path: / by default
 management:
     port: 7002
@@ -22,6 +22,7 @@ spring:
         database: H2
         hibernate:
             ddl-auto: none
+        showSql: true
     datasource:
         driverClassName: org.h2.Driver
 #        url: jdbc:h2:file:~/.h2/bootapi;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1;
