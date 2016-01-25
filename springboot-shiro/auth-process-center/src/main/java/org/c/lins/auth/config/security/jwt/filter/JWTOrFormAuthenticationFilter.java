@@ -44,7 +44,7 @@ public final class JWTOrFormAuthenticationFilter extends AuthenticatingFilter {
 
         if("OPTIONS".equals(((HttpServletRequest)request).getMethod())){
             HttpServletResponse httpResponse = WebUtils.toHttp(response);
-            httpResponse.setStatus(HttpServletResponse.SC_OK);
+            httpResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             return loggedIn;
         }
         if (isLoginRequest(request, response) || isLoggedAttempt(request, response)) {
