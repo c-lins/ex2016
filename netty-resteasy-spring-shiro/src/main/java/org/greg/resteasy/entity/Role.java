@@ -10,11 +10,11 @@ import javax.persistence.Id;
 /**
  * Created by lins on 16-1-11.
  */
-@Entity
+//@Entity
 public class Role {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     public String roleAliasName;

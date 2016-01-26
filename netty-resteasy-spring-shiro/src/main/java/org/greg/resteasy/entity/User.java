@@ -9,11 +9,11 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+//@Entity
 public class User extends ShiroUser {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
 	public String aliasName;
@@ -23,12 +23,12 @@ public class User extends ShiroUser {
 	public String email;
 
 	// 多对多定义
-	@ManyToMany
-	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+//	@ManyToMany
+//	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
 	// Fecth策略定义
-	@Fetch(FetchMode.JOIN)
+//	@Fetch(FetchMode.JOIN)
 	// 集合按id排序
-	@OrderBy("id ASC")
+//	@OrderBy("id ASC")
 
 	private List<Role> roles = Lists.newArrayList(); // 有序的关联对象集合
 

@@ -10,11 +10,11 @@ import javax.persistence.Id;
 /**
  * Created by lins on 16-1-12.
  */
-@Entity
+//@Entity
 public class UrlFilter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     public String name; //url名称/描述

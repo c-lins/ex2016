@@ -1,6 +1,7 @@
 package org.greg.resteasy.security;
 
-import org.c.lins.auth.config.security.jwt.TokenResponse;
+
+import org.greg.resteasy.security.jwt.TokenResponse;
 
 import java.security.SecureRandom;
 

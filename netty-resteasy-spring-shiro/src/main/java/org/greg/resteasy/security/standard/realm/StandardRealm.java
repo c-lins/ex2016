@@ -26,8 +26,8 @@ public class StandardRealm extends AuthorizingRealm {
 
 //    @Autowired
 //    private SessionDAO sessionDAO;
-    @Autowired
-    private AccountService accountService;
+//    @Autowired
+//    private AccountService accountService;
 
     @PostConstruct
     public void initCredentialsMatcher() {
@@ -45,7 +45,16 @@ public class StandardRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        User user = accountService.findUserByLoginName(token.getUsername());
+//        User user = accountService.findUserByLoginName(token.getUsername());
+        User user = new User();
+        user.id=1L;
+        user.aliasName="张三";
+        user.loginName="yyw01";
+        user.salt="b6682f6ff51ca51e";
+        user.email="linchao@111.com.cn";
+        user.hashPassword="eea645f601a395e800163c89d18241a060a2d826";
+
+//        1,'linchao@111.com.cn','张三','yyw01','b6682f6ff51ca51e','eea645f601a395e800163c89d18241a060a2d826'
         if (user != null) {
 //            if ("disabled".equals(user.status())) {
 //                throw new DisabledAccountException();
@@ -62,16 +71,16 @@ public class StandardRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-        User user = accountService.findUserByLoginName(shiroUser.loginName);
+//        User user = accountService.findUserByLoginName(shiroUser.loginName);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        for (Role role : user.getRoles()) {
+//        for (Role role : user.getRoles()) {
             // 基于Role的权限信息
-            info.addRole(role.roleName);
+            info.addRole("system");
 
             // 基于Permission的权限信息
 //            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));
-        }
+//        }
         return info;
     }
 

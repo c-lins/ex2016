@@ -18,14 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by lins on 16-1-11.
  */
-@Service
+//@Service
 public class AccountService {
     private static Logger logger = LoggerFactory.getLogger(AccountService.class);
 
-    @Autowired
+//    @Autowired
     private UserDao userDao;
-    @Autowired
-    private RoleDao roleDao;
 
     private static void hashPassword(User user, String password) {
         byte[] salt = Digests.generateSalt(Securitys.SALT_SIZE);

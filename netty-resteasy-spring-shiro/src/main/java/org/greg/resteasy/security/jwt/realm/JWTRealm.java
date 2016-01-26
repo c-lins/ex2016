@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class JWTRealm extends AuthorizingRealm {
 
-    @Autowired
-    private AccountService accountService;
+//    @Autowired
+//    private AccountService accountService;
     @Autowired
     private JWTToken tokens;
 
@@ -33,17 +33,24 @@ public class JWTRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
         JWTAuthenticationToken upToken = (JWTAuthenticationToken) token;
-        User user = accountService.findById(Long.parseLong(upToken.getUserId()+""));
+//        User user = accountService.findById(Long.parseLong(upToken.getUserId()+""));
+        User user = new User();
+        user.id=1L;
+        user.aliasName="张三";
+        user.loginName="yyw01";
+        user.salt="b6682f6ff51ca51e";
+        user.email="linchao@111.com.cn";
+        user.hashPassword="eea645f601a395e800163c89d18241a060a2d826";
 
         if (user != null && tokens.validateToken(upToken.getToken())) {
             SimpleAccount account = new SimpleAccount(user, upToken.getToken(), getName());
-            for (Role role : user.getRoles()) {
+//            for (Role role : user.getRoles()) {
                 // 基于Role的权限信息
-                account.addRole(role.roleName);
+                account.addRole("system");
 
                 // 基于Permission的权限信息
 //            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));
-            }
+//            }
             return account;
         }
 
@@ -54,16 +61,16 @@ public class JWTRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-        User user = accountService.findUserByLoginName(shiroUser.loginName);
+//        User user = accountService.findUserByLoginName(shiroUser.loginName);
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        for (Role role : user.getRoles()) {
-            // 基于Role的权限信息
-            info.addRole(role.roleName);
-
-            // 基于Permission的权限信息
-//            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));
-        }
+//        for (Role role : user.getRoles()) {
+//            // 基于Role的权限信息
+            info.addRole("system");
+//
+//            // 基于Permission的权限信息
+////            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));
+//        }
         return info;
     }
 
