@@ -7,6 +7,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:annotation-config />
-	<context:component-scan base-package="org.greg.resteasy" />
+	<context:component-scan base-package="org.c.lins.auth" />
 
 </beans:beans>
