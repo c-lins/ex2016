@@ -9,7 +9,7 @@
 
   <modules>
       <module>springboot-shiro</module>
-      <module>netty-resteasy-spring-shiro</module>
+    <module>netty-resteasy-spring-shiro</module>
   </modules>
 
   <name>2016 Examples Demo</name>
