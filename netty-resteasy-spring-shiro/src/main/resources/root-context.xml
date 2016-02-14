@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+          http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 	<context:annotation-config />
 	<context:component-scan base-package="org.c.lins.auth" />
 
-</beans:beans>
+	<jpa:repositories base-package="org.c.lins.auth.repository"/>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="packagesToScan" value="org.c.lins.auth.entity"/>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true"/>
+				<property name="generateDdl" value="true"/>
+				<property name="databasePlatform" value="org.hibernate.dialect.H2Dialect"/>
+			</bean>
+		</property>
+		<!-- put any ORM specific stuff here -->
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop> <!-- Remove this, if you don't want tables to be changed according to the Entity definitions.
+                                                                       If 'update' is given, then table schema will be changed according to the changes in domain entities.
+                                                                       If table doesn't exist it'll be created. -->
+			</props>
+		</property>
+	</bean>
+
+
+	<bean name="dataSource" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+		<property name="targetDataSource">
+			<bean destroy-method="close" class="com.alibaba.druid.pool.DruidDataSource">
+				<property name="driverClassName" value="org.h2.Driver"/>
+				<property name="url" value="jdbc:h2:~/test;AUTO_SERVER=TRUE"/>
+				<property name="username" value="sa"/>
+				<property name="password" value=""/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+
+</beans>

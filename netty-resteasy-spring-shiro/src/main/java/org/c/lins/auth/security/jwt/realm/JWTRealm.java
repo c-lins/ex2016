@@ -31,17 +31,18 @@ public class JWTRealm extends AuthorizingRealm {
         JWTAuthenticationToken upToken = (JWTAuthenticationToken) token;
 //        User user = accountService.findById(Long.parseLong(upToken.getUserId()+""));
         User user = new User();
-        user.id = 1L;
-        user.aliasName = "系统管理员";
-        user.loginName = "yyw01";
-        user.salt = "b6682f6ff51ca51e";
-        user.hashPassword = "eea645f601a395e800163c89d18241a060a2d826";
+        user.setId(1L);
+        user.setAliasName("系统管理员");
+        user.setLoginName("yyw01");
+        user.setSalt("b6682f6ff51ca51e");
+        user.setHashPassword("eea645f601a395e800163c89d18241a060a2d826");
+
 
         if (user != null && tokens.validateToken(upToken.getToken())) {
-            SimpleAccount account = new SimpleAccount(new ShiroUser(user.id,user.loginName,user.aliasName), upToken.getToken(), getName());
+            SimpleAccount account = new SimpleAccount(new ShiroUser(user.getId(),user.getLoginName(),user.getAliasName()), upToken.getToken(), getName());
             for (Role role : user.getRoles()) {
                 // 基于Role的权限信息
-                account.addRole(role.roleName);
+                account.addRole(role.getRoleName());
 
                 // 基于Permission的权限信息
 //            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));

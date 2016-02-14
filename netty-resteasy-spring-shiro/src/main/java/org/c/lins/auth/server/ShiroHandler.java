@@ -1,9 +1,8 @@
 package org.c.lins.auth.server;
 
 import com.nimbusds.jose.JWSObject;
-import io.netty.channel.*;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpMessage;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.AttributeKey;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.text.ParseException;
-import java.util.Map;
 
 import static org.jboss.resteasy.util.HttpHeaderNames.AUTHORIZATION;
 

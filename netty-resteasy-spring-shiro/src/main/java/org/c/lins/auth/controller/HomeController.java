@@ -14,6 +14,7 @@ import org.apache.shiro.subject.Subject;
 import org.c.lins.auth.controller.request.Article;
 import org.c.lins.auth.entity.User;
 import org.c.lins.auth.pojo.response.Helloworld;
+import org.c.lins.auth.repository.UserDao;
 import org.c.lins.auth.security.ShiroUser;
 import org.c.lins.auth.security.jwt.JWTToken;
 import org.c.lins.auth.security.jwt.TokenResponse;
@@ -27,6 +28,8 @@ public class HomeController {
 	@Autowired
 	private JWTToken tokens;
 
+	@Autowired
+	private UserDao userDao;
 	@POST
 	@Path("/world")
 	@Produces("application/json")
@@ -50,13 +53,15 @@ public class HomeController {
 		return article;
 	}
 
-   /* *//**
-     * 因为自动转换为实例出错，所有直接获取参数，再创建实例
-     * @param name
-     * @param id
-     * @return
-     *//*
-    *//*@POST
+//   /**
+//     * 因为自动转换为实例出错，所有直接获取参数，再创建实例
+//     * @param name
+//     * @param id
+//     * @return
+//     */
+
+   /*
+    @POST
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Article save(@QueryParam("name") String name,
@@ -77,13 +82,11 @@ public class HomeController {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public TokenResponse login(User user) {
-
-
 		//当前Subject
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken uptoken = new UsernamePasswordToken(
-				user.loginName,
-                user.hashPassword);
+				user.getLoginName(),
+                user.getHashPassword());
 //		uptoken.setRememberMe(true);
         try {
 			subject.login(uptoken);

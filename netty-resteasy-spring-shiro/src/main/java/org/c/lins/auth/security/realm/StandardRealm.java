@@ -38,19 +38,19 @@ public class StandardRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 //        User user = accountService.findUserByLoginName(token.getUsername());
         User user = new User();
-        user.id = 1L;
-        user.aliasName = "系统管理员";
-        user.loginName = "yyw01";
-        user.salt = "b6682f6ff51ca51e";
-        user.hashPassword = "eea645f601a395e800163c89d18241a060a2d826";
+        user.setId(1L);
+        user.setAliasName("系统管理员");
+        user.setLoginName("yyw01");
+        user.setSalt("b6682f6ff51ca51e");
+        user.setHashPassword("eea645f601a395e800163c89d18241a060a2d826");
 
         if (user != null) {
 //            if ("disabled".equals(user.status())) {
 //                throw new DisabledAccountException();
 //            }
 
-            byte[] salt = Encodes.decodeHex(user.salt);
-            return new SimpleAuthenticationInfo(new ShiroUser(user.id,user.loginName,user.aliasName), user.hashPassword, ByteSource.Util.bytes(salt), getName());
+            byte[] salt = Encodes.decodeHex(user.getSalt());
+            return new SimpleAuthenticationInfo(new ShiroUser(user.getId(),user.getLoginName(),user.getAliasName()), user.getHashPassword(), ByteSource.Util.bytes(salt), getName());
         } else {
             throw new UnknownAccountException();
         }
