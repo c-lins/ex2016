@@ -7,13 +7,25 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.c.lins.auth.controller.request.Article;
+import org.c.lins.auth.entity.User;
 import org.c.lins.auth.pojo.response.Helloworld;
+import org.c.lins.auth.security.ShiroUser;
+import org.c.lins.auth.security.jwt.JWTToken;
+import org.c.lins.auth.security.jwt.TokenResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
 @Path("/hello")
 public class HomeController {
+
+	@Autowired
+	private JWTToken tokens;
 
 	@POST
 	@Path("/world")
@@ -60,5 +72,30 @@ public class HomeController {
 			List<Article> articles) {
 		return articles;
 	}
+	@POST
+	@Path("/login")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public TokenResponse login(User user) {
 
+
+		//当前Subject
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken uptoken = new UsernamePasswordToken(
+				user.loginName,
+                user.hashPassword);
+//		uptoken.setRememberMe(true);
+        try {
+			subject.login(uptoken);
+
+        } catch (AuthenticationException e) {//登录失败
+            e.printStackTrace();
+        } catch (Exception e) {//登录失败
+            e.printStackTrace();
+        }
+
+		ShiroUser cuuser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
+		TokenResponse token = tokens.createToken(cuuser);
+		return token;
+	}
 }

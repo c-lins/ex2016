@@ -43,6 +43,7 @@ public class NettyServer {
 		netty = new ConfigurableNettyJaxrsServer();
 		netty.setDeployment(dp);
 		netty.setPort(port);
+		netty.setSecurityManager((org.apache.shiro.mgt.SecurityManager) ac.getBean("securityManager"));
 		netty.setRootResourcePath("/resteasy");
 		netty.setSecurityDomain(null);
 		netty.start();

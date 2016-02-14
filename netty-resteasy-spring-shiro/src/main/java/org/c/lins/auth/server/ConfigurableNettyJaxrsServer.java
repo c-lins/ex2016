@@ -13,6 +13,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
+import org.apache.shiro.mgt.SecurityManager;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.server.netty.*;
 
@@ -77,6 +78,7 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 
 	private EventLoopGroup eventLoopGroup;
 	private EventLoopGroup eventExecutor;
+	private SecurityManager securityManager;
 	private int ioWorkerCount = Runtime.getRuntime().availableProcessors() * 2;
 	private int executorThreadCount = 16;
 	private SSLContext sslContext;
@@ -124,6 +126,10 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 		this.backlog = backlog;
 	}
 
+	public void setSecurityManager(SecurityManager securityManager) {
+		this.securityManager = securityManager;
+	}
+
 	@Override
 	public void start() {
 		eventLoopGroup = new NioEventLoopGroup(ioWorkerCount);
@@ -142,6 +148,7 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 							ch.pipeline().addLast(new HttpResponseEncoder());
 							ch.pipeline().addLast(new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), root, RestEasyHttpRequestDecoder.Protocol.HTTP));
 							ch.pipeline().addLast(new CorsHeadersChannelHandler());
+							ch.pipeline().addLast(new ShiroHandler(securityManager));
 							ch.pipeline().addLast(new RestEasyHttpResponseEncoder());
 							ch.pipeline().addLast(eventExecutor, new RequestHandler(dispatcher));
 						}
