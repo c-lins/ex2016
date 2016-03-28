@@ -10,6 +10,7 @@
   <modules>
       <module>springboot-shiro</module>
     <module>netty-resteasy-spring-shiro</module>
+    <module>springboot-upload</module>
   </modules>
 
   <name>2016 Examples Demo</name>
